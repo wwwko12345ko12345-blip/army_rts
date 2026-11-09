@@ -11,10 +11,10 @@ jobs:
       image: ps2dev/ps2dev:latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install ISO tool
+      - name: Install tools
         run: |
-          which mkisofs || which genisoimage || apk add --no-cache cdrkit || pacman -Sy --noconfirm cdrkit || true
-          which mkisofs; which genisoimage; ls /usr/bin/*iso* || true
+          apk add --no-cache make cdrkit git || apk add --no-cache make genisoimage git || true
+          which make; which mkisofs; which genisoimage; ls /usr/local/ps2dev/bin/ || true
       - name: Build ELF
         run: |
           export PS2DEV=/usr/local/ps2dev

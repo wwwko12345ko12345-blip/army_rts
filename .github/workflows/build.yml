@@ -11,24 +11,12 @@ jobs:
       image: ps2dev/ps2dev:latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install tools + gsKit
-        run: |
-          apk add --no-cache make cdrkit git || true
-          export PS2DEV=/usr/local/ps2dev
-          export PS2SDK=/usr/local/ps2dev/ps2sdk
-          export PATH=$PATH:/usr/local/ps2dev/bin:/usr/local/ps2dev/ee/bin:/usr/local/ps2dev/iop/bin
-          cd /tmp
-          rm -rf dmaKit gsKit
-          git clone https://github.com/ps2dev/dmaKit.git
-          cd dmaKit && make && make install && cd ..
-          git clone https://github.com/ps2dev/gsKit.git
-          cd gsKit && make && make install && cd ..
-          ls /usr/local/ps2dev/ps2sdk/ee/include/gsKit.h && echo "gsKit OK"
       - name: Build ELF
         run: |
           export PS2DEV=/usr/local/ps2dev
           export PS2SDK=/usr/local/ps2dev/ps2sdk
           export PATH=$PATH:/usr/local/ps2dev/bin:/usr/local/ps2dev/ee/bin:/usr/local/ps2dev/iop/bin
+          apk add --no-cache make cdrkit || true
           make
           ls -lh *.elf
       - name: Make ISO

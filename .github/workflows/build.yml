@@ -13,7 +13,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install ISO tool
         run: |
-          apt-get update && apt-get install -y genisoimage
+          which mkisofs || which genisoimage || apk add --no-cache cdrkit || pacman -Sy --noconfirm cdrkit || true
+          which mkisofs; which genisoimage; ls /usr/bin/*iso* || true
       - name: Build ELF
         run: |
           export PS2DEV=/usr/local/ps2dev
@@ -26,7 +27,7 @@ jobs:
           mkdir -p iso
           cp army_rts.elf iso/SLUS_999.99
           cp SYSTEM.CNF iso/
-          mkisofs -o army_rts.iso -V "ARMY_RTS" -iso-level 4 iso/
+          (mkisofs -o army_rts.iso -V "ARMY_RTS" -iso-level 4 iso/ || genisoimage -o army_rts.iso -V "ARMY_RTS" -iso-level 4 iso/)
           ls -lh *.iso
       - uses: actions/upload-artifact@v4
         with:

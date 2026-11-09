@@ -11,6 +11,9 @@ jobs:
       image: ps2dev/ps2dev:latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install ISO tool
+        run: |
+          apt-get update && apt-get install -y genisoimage
       - name: Build ELF
         run: |
           export PS2DEV=/usr/local/ps2dev
